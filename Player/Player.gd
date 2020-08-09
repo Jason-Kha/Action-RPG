@@ -24,19 +24,20 @@ onready var hurtbox = $Hurtbox
 
 # Called when the node is ready, initialization
 func _ready():
+	randomize()
 	stats.connect("no_health", self, "queue_free")
 	animationTree.active = true
 	swordHitbox.knockback_vector = roll_vector
-	print("Player ready")
-	pass
 
 # Frame rate is synced to the physics
 func _physics_process(delta):
 	match state:
 		MOVE:
 			move_state(delta)
+			
 		ROLL:
 			roll_state(delta)
+			
 		ATTACK:
 			attack_state(delta)
 	
@@ -58,7 +59,7 @@ func move_state(delta):
 	else:
 		animationState.travel("Idle")
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
-		
+	
 	move()
 	
 	if Input.is_action_just_pressed("roll"):
